@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-    isAuthenticated: true,
+    isAuthenticated: false,
     isLoading: false,
     user: null,
 };
@@ -43,7 +43,7 @@ export const logoutUser = createAsyncThunk('/auth/logout',
             }
         )
         console.log(response.data);
-        
+
         return response.data
     }
 )
