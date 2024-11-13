@@ -38,13 +38,13 @@ const addProduct = async (req, res) => {
             totalStock,
             averageReview
         } = req.body
-        const isExist = ProductSchema.findOne({})
-        if (isExist) {
-            res.status(404).json({
-                success: false,
-                message: "Product already exist"
-            })
-        }
+        // const isExist = ProductSchema.findOne({})
+        // if (isExist) {
+        //     res.status(400).json({
+        //         success: false,
+        //         message: "Product already exist"
+        //     })
+        // }
         const newProduct = new ProductSchema({
             image,
             title,

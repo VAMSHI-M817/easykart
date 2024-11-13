@@ -6,7 +6,7 @@ const initialState = {
     isLoading: false,
     user: null,
 };
-
+//REGISTERED USER 
 export const registerUser = createAsyncThunk(
     "/auth/register",
     async (formData, { rejectWithValue }) => {
@@ -19,7 +19,7 @@ export const registerUser = createAsyncThunk(
     }
 );
 
-
+//AUTHORIZING THE USER BY PROVINDING ACCESS TOKEN IN COOKIES
 export const loginUser = createAsyncThunk(
     "/auth/login",
 
@@ -35,6 +35,7 @@ export const loginUser = createAsyncThunk(
     }
 );
 
+//LOGGING OUT USER BY REMOVING ACCESS TOKEN FROM COOKIES
 export const logoutUser = createAsyncThunk('/auth/logout',
     async () => {
         const response = await axios.post('http://localhost:5000/api/auth/logout',
@@ -48,7 +49,7 @@ export const logoutUser = createAsyncThunk('/auth/logout',
     }
 )
 
-
+//CHECKING THE ACCESS TOKEN IN COOKIES AND MATHCING WITH BACKEND PROVIDED TOKEN
 export const checkauth = createAsyncThunk('/auth/checkauth',
     async (_, { rejectWithValue }) => {
         try {
@@ -70,9 +71,7 @@ const authSlice = createSlice({
     name: "authentication",
     initialState,
     reducers: {
-        setUser: (state, action) => {
-
-        },
+        setUser: (state, action) => { },
     },
     extraReducers: (builder) => {
         builder

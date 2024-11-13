@@ -6,9 +6,9 @@ const { upload } = require('../../helpers/cloudinary')
 
 router.post('/upload-image', upload.single("my_file"), handleImageUpload)
 router.post('/add-product', addProduct)
-router.get('/get-products', getAllProducts)
-router.put('/edit/:id', editProduct)
-router.delete('/delete/:id', deleteProduct)
+router.get('/get-product', getAllProducts)
+router.put('/edit-product/:id', editProduct)
+router.delete('/delete-product/:id', deleteProduct)
 
 
 
