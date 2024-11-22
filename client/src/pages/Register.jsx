@@ -27,6 +27,7 @@ const Register = () => {
                     title: data?.payload?.message || "Something went wrong",
                 });
                 navigate("/auth/login");
+                setFormData(initialState)
             } else {
                 toast({
                     title: data?.payload?.message || "Something went wrong",

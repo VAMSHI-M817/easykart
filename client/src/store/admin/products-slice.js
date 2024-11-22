@@ -35,7 +35,7 @@ export const getAllProducts = createAsyncThunk('/products/get-product',
 )
 
 export const editProduct = createAsyncThunk('/products/edit-product',
-    async ({ id, formData, rejectWithValue }) => {
+    async ({ id, formData }, { rejectWithValue }) => {
         try {
             const response = await axios.put(`http://localhost:5000/api/admin/products/edit-product/${id}`, formData, {
                 headers: {
@@ -50,7 +50,7 @@ export const editProduct = createAsyncThunk('/products/edit-product',
 )
 
 export const deleteProduct = createAsyncThunk('/products/delete-product',
-    async ({ id, rejectWithValue }) => {
+    async (id, { rejectWithValue }) => {
         try {
             const response = await axios.delete(`http://localhost:5000/api/admin/products/delete-product/${id}`)
             return response?.data

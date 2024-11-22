@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { addProductFormElements } from "@/Form-Configs"
 import { Fragment, useEffect, useState } from "react"
-import { getAllProducts, addProduct } from '../../store/admin/products-slice'
+import { getAllProducts, addProduct, editProduct } from '../../store/admin/products-slice'
 import { useDispatch, useSelector } from "react-redux"
 import { useToast } from "@/hooks/use-toast"
+import AdminProductCard from "./AdminProductCard"
 
 
 const AdminProducts = () => {
@@ -24,17 +25,30 @@ const AdminProducts = () => {
   const [imageFile, setImageFile] = useState(null)
   const [uploadedImageUrl, setUploadedImageUrl] = useState("")
   const [imageLoadingState, setImageLoadingState] = useState(false)
+  const [currentEditedId, setcurrentEditedId] = useState(null)
   const { toast } = useToast()
   const dispatch = useDispatch()
   const { productList } = useSelector(store => store.adminProducts)
 
-  // console.log("products", productList);
-
-
 
   const onSubmit = (e) => {
     e.preventDefault()
-    dispatch(addProduct({ ...formData, image: uploadedImageUrl })).then((res) => {
+
+    currentEditedId !== null ? (dispatch(editProduct({ id: currentEditedId, formData: formData })).then((data) => {
+      console.log(data)
+
+      if (data?.payload?.success) {
+        setFormData(initialFormdata)
+        setOpenProductSidebar(false)
+        setcurrentEditedId(null)
+        dispatch(getAllProducts())
+        toast({
+          title:"Product Edited Successfully"
+        })
+      }
+
+
+    })) : (dispatch(addProduct({ ...formData, image: uploadedImageUrl })).then((res) => {
       console.log(res);
       setImageFile(null)
       setFormData(initialFormdata)
@@ -43,7 +57,7 @@ const AdminProducts = () => {
         title: "Product added Successfully"
       })
       setOpenProductSidebar(false)
-    })
+    }))
   }
 
   useEffect(() => {
@@ -58,14 +72,28 @@ const AdminProducts = () => {
           Add New Product
         </Button>
       </div>
-
+      <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {productList && productList.length > 0 ? productList.map((product) => {
+          return <AdminProductCard
+            key={product?._id}
+            product={product}
+            setOpenProductSidebar={setOpenProductSidebar}
+            setFormData={setFormData}
+            setcurrentEditedId={setcurrentEditedId}
+          />
+        }) : null}
+      </div>
       <Sheet
         open={OpenProductSidebar}
-        onOpenChange={(isOpen) => setOpenProductSidebar(isOpen)}>
+        onOpenChange={(isOpen) => {
+          setOpenProductSidebar(isOpen)
+          setcurrentEditedId(false)
+          setFormData(initialFormdata)
+        }}>
         <SheetContent side="right" className="overflow-auto">
           <SheetHeader>
             <SheetTitle>
-              <div>Admin</div>
+              {currentEditedId !== null ? "Edit" : "add"}
             </SheetTitle>
           </SheetHeader>
           <ProductImageUpload
@@ -74,7 +102,9 @@ const AdminProducts = () => {
             uploadedImageUrl={uploadedImageUrl}
             setUploadedImageUrl={setUploadedImageUrl}
             imageLoadingState={imageLoadingState}
-            setImageLoadingState={setImageLoadingState} />
+            setImageLoadingState={setImageLoadingState}
+            isEditMode={currentEditedId}
+          />
           <div className="py-6">
             <CommonForm
               formControls={addProductFormElements}

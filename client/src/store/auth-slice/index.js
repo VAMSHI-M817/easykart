@@ -38,14 +38,14 @@ export const loginUser = createAsyncThunk(
 //LOGGING OUT USER BY REMOVING ACCESS TOKEN FROM COOKIES
 export const logoutUser = createAsyncThunk('/auth/logout',
     async () => {
-        const response = await axios.post('http://localhost:5000/api/auth/logout',
+        const response = await axios.post('http://localhost:5000/api/auth/logout', {},
             {
                 withCredentials: true
             }
         )
         console.log(response.data);
 
-        return response.data
+        return response.data    
     }
 )
 

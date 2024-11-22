@@ -19,11 +19,13 @@ import { checkauth } from './store/auth-slice';
 import ShoppingListing from './pages/shopping-view/ShoppingListing';
 import { Skeleton } from "@/components/ui/skeleton";
 import './App.css';
+import Spinner from './pages/Spinner';
 
 
 function App() {
   const dispatch = useDispatch();
   const { isAuthenticated, user, isLoading } = useSelector((store) => store.auth);
+
 
   useEffect(() => {
     dispatch(checkauth());

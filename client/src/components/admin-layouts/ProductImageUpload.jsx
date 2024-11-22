@@ -6,7 +6,9 @@ import { Button } from '../ui/button'
 import axios from 'axios'
 import { Skeleton } from '../ui/skeleton'
 
-const ProductImageUpload = ({ imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl, imageLoadingState, setImageLoadingState }) => {
+const ProductImageUpload = ({ isEditMode, imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl, imageLoadingState, setImageLoadingState }) => {
+    console.log(isEditMode, "isEditMode");
+
 
     const inputRef = useRef()
 
@@ -44,8 +46,6 @@ const ProductImageUpload = ({ imageFile, setImageFile, uploadedImageUrl, setUplo
             setUploadedImageUrl(response?.data?.result?.url)
             console.log("Image Uploaded successfully");
             setImageLoadingState(false)
-
-
         }
     }
 
@@ -57,20 +57,22 @@ const ProductImageUpload = ({ imageFile, setImageFile, uploadedImageUrl, setUplo
     return (
         <div className='w-full max-w-md mx-auto'>
             <Label className="text-lg font-semibold mb-2 block">Upload Image</Label>
-            <div className='border-2 border-dashed p-4 rounded-lg'
+            <div className={`${isEditMode ? " opacity-70" : ""} border-2 border-dashed border-slate-500 p-4 rounded-lg`}
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
             >
                 <Input
+                    required={true}
                     id="image-upload"
                     type="file"
                     className="hidden"
                     ref={inputRef}
                     onChange={handleImageFileChange}
+                    disabled={isEditMode}
                 />
 
                 {
-                    !imageFile ? (<Label htmlFor="image-upload" className="flex flex-col items-center justify-center  h-32 cursor-pointer">
+                    !imageFile ? (<Label htmlFor="image-upload" className={`${isEditMode ? " cursor-not-allowed" : ""} flex flex-col items-center justify-center  h-32 cursor-pointer`}>
                         <UploadCloudIcon />
                         <div>Drag and drop or click to upload image</div>
                     </Label>) : imageLoadingState ? (<Skeleton className="h-10 bg-gray-300" />) : (<div className="flex items-center justify-between">
